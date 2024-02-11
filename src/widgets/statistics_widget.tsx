@@ -17,15 +17,10 @@ type RepetitionTimeList = {
   list: RepetitionTimeObject[]
 }
 
-export const SampleWidget = () => {
+export const StatisticsWidget = () => {
   const [nextRepetitionTime, setNextRepetitionTime] =
     useState<RepetitionTimeList[]>([]);
   const plugin = usePlugin();
-
-  let name = useTracker(() => plugin.settings.getSetting<string>('name'));
-  let likesPizza = useTracker(() => plugin.settings.getSetting<boolean>('pizza'));
-  let favoriteNumber = useTracker(() => plugin.settings.getSetting<number>('favorite-number'));
-  var allCardsInContext;
   let allRemsInContext: Rem[] | undefined;
   /**
    * get all Cards from allRemsInContext, resolve the promises and store them in allCards
@@ -92,4 +87,4 @@ export const SampleWidget = () => {
   );
 };
 
-renderWidget(SampleWidget);
+renderWidget(StatisticsWidget);
