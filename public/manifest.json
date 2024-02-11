@@ -1,0 +1,21 @@
+{
+  "author": "Akiriki",
+  "name": "Remote Statistics",
+  "description": "This plugin provides advanced statistics for flashcards.",
+  "enableOnMobile": true,
+  "id": "Akiriki-z5st6cs",
+  "manifestVersion": 1,
+  "repoUrl": "http://localhost:8080/",
+  "version": {
+    "major": 0,
+    "minor": 0,
+    "patch": 1
+  },
+  "requestNative": false,
+  "requiredScopes": [
+    {
+      "type": "All",
+      "level": "Read"
+    }
+  ]
+}
