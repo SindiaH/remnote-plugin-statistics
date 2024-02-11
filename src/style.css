@@ -43,3 +43,21 @@ body,
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.card-date {
+  padding-top: 16px;
+  font-size: 1.2rem;
+  color: #60b2ff;
+}
+.card-length {
+  color: #60b2ff;
+}
+.card-red {
+  color: #ff6060;
+}
+.card-green {
+  color: #7ff87f;
+}
+.card-orange {
+  color: #ffbf60;
+}
