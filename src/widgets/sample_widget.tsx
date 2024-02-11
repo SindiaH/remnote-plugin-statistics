@@ -1,4 +1,4 @@
-import { usePlugin, renderWidget, useTracker, useRunAsync } from '@remnote/plugin-sdk';
+import { usePlugin, renderWidget, useTracker, useRunAsync, Rem } from '@remnote/plugin-sdk';
 import { Card } from '@remnote/plugin-sdk/dist/name_spaces/card';
 import { useState } from 'react';
 import moment from 'moment';
@@ -9,7 +9,6 @@ import '../App.css';
 type RepetitionTimeObject = {
   id: string;
   dateTime: Date;
-  pageName: string;
   score: QueueInteractionScore;
 }
 
@@ -27,7 +26,7 @@ export const SampleWidget = () => {
   let likesPizza = useTracker(() => plugin.settings.getSetting<boolean>('pizza'));
   let favoriteNumber = useTracker(() => plugin.settings.getSetting<number>('favorite-number'));
   var allCardsInContext;
-  var allRemsInContext: any;
+  let allRemsInContext: Rem[] | undefined;
   /**
    * get all Cards from allRemsInContext, resolve the promises and store them in allCards
    */
@@ -39,7 +38,7 @@ export const SampleWidget = () => {
     return await plugin.rem.getAll();
   }, []);
 
-  allCardsInContext = useRunAsync(async () => {
+  useRunAsync(async () => {
     const result: Card[] = [];
     const objectList: RepetitionTimeObject[] = [];
     for (const rem of allRemsInContext || []) {
@@ -50,8 +49,7 @@ export const SampleWidget = () => {
           const item: RepetitionTimeObject = {
             dateTime: new Date(card.nextRepetitionTime),
             id: card.remId,
-            pageName: rem.name,
-            score: card.repetitionHistory?.at(-1)?.score ?? '',
+            score: card.repetitionHistory?.at(-1)?.score ?? 0,
           };
           objectList.push(item);
         }
