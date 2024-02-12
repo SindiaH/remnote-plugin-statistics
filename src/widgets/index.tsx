@@ -33,7 +33,7 @@ async function onActivate(plugin: ReactRNPlugin) {
   // });
 
   // Register a sidebar widget.
-  await plugin.app.registerWidget('statistics_widget', WidgetLocation.RightSidebar, {
+  await plugin.app.registerWidget('statistics_widget', WidgetLocation.LeftSidebar, {
     dimensions: { height: 'auto', width: '100%' },
     widgetTabIcon: 'https://img.icons8.com/external-yogi-aprelliyanto-flat-yogi-aprelliyanto/32/external-statistic-marketing-and-seo-yogi-aprelliyanto-flat-yogi-aprelliyanto.png',
     widgetTabTitle: 'Statistics',

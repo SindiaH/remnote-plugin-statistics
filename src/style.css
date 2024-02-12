@@ -15,10 +15,10 @@
 
 html,
 :host-context(div) {
-  line-height: 1.5; /* 1 */
-  -webkit-text-size-adjust: 100%; /* 2 */
-  -moz-tab-size: 4; /* 3 */
-  tab-size: 4; /* 3 */
+    line-height: 1.5; /* 1 */
+    -webkit-text-size-adjust: 100%; /* 2 */
+    -moz-tab-size: 4; /* 3 */
+    tab-size: 4; /* 3 */
 }
 
 /*
@@ -28,8 +28,8 @@ html,
 
 body,
 :host {
-  margin: 0; /* 1 */
-  line-height: inherit; /* 2 */
+    margin: 0; /* 1 */
+    line-height: inherit; /* 2 */
 }
 
 /**
@@ -37,27 +37,102 @@ body,
 
 body,
 :host {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
     'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .card-date {
-  padding-top: 16px;
-  font-size: 1.2rem;
-  color: #60b2ff;
+    /*padding-top: 16px;*/
+    /*font-size: 1.2rem;*/
+    color: #60b2ff;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    height: 100px;
+    text-align: center;
 }
+
+.card-sum {
+    font-size: 1.1rem;
+}
+
 .card-length {
-  color: #60b2ff;
+    color: #60b2ff;
 }
+
 .card-red {
-  color: #ff6060;
+    color: #ff6060;
 }
+
 .card-green {
-  color: #7ff87f;
+    color: #7ff87f;
 }
+
 .card-orange {
-  color: #ffbf60;
+    color: #ffbf60;
+}
+
+.card-red-bg {
+    background: #ff6060;
+    color: black;
+    text-align: center;
+}
+
+.card-green-bg {
+    background: #7ff87f;
+    color: black;
+    text-align: center;
+}
+
+.card-orange-bg {
+    background: #ffbf60;
+    color: black;
+    text-align: center;
+}
+
+.card-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+}
+
+.indicator {
+    border: 1px solid black;
+    border-radius: 5px;
+    display: flex;
+    position: relative;
+}
+
+.card-indicator-info {
+    color: black;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.card-container:hover .card-popup,
+.card-container:focus .card-popup {
+    display: initial;
+    /*position: relative;*/
+}
+
+.card-popup {
+    position: absolute;
+    top: 6px;
+    right: 0;
+    display: none;
+    z-index: 1;
+    background-color: black;
+    border: 1px solid #d3d3d3;
+    border-radius: 8px;
+    padding: 10px;
+
+}
+html {
+    overflow: scroll !important;
+    /*height: 100%;*/
 }
