@@ -1,11 +1,12 @@
 {
   "author": "Akiriki",
-  "name": "Remote Statistics",
-  "description": "This plugin provides advanced statistics for flashcards.",
+  "name": "Simple Statistics",
+  "description": "This plugin provides simple statistics for flashcards.",
   "enableOnMobile": true,
   "id": "Akiriki-z5st6cs",
+  "unlisted": true,
   "manifestVersion": 1,
-  "repoUrl": "http://localhost:8080/",
+  "repoUrl": "https://github.com/SindiaH/remnote-plugin-statistics",
   "version": {
     "major": 0,
     "minor": 0,
