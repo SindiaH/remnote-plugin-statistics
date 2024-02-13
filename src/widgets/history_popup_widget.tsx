@@ -1,12 +1,8 @@
 import {
-  AppEvents,
   renderWidget,
-  useAPIEventListener,
   usePlugin,
-  useRunAsync,
-  WidgetLocation,
+  useRunAsync
 } from '@remnote/plugin-sdk';
-import { StatisticsWidget } from './statistics_widget';
 import '../style.css';
 import './history-popup-widget.css';
 
@@ -14,20 +10,8 @@ export const HistoryPopupWidget = () => {
   const plugin = usePlugin();
 
   let currentCardInfo = useRunAsync(async () => {
-    let item =  await plugin.queue.getCurrentCard();
-    console.log('currentCardInfo', item);
-    return item;
-
+    return  await plugin.queue.getCurrentCard();
   }, []);
-
-  plugin.event.addListener(AppEvents.QueueLoadCard, undefined, async () => {
-    console.log('QueueLoadCard');
-  });
-
-  // useAPIEventListener(AppEvents.QueueExit, undefined, async () => {
-  //   const { floatingWidgetId } = await plugin.widget.getWidgetContext<WidgetLocation.FloatingWidget>();
-  //   await plugin.window.closeFloatingWidget(floatingWidgetId);
-  // });
 
   const getClassByScore = (score: number) => {
     if (score <= 0.01) {
@@ -47,18 +31,22 @@ export const HistoryPopupWidget = () => {
       return "0ms";
     }
 
-    let secsIn = milliSecondsIn / 600;
+
+    let secsIn = milliSecondsIn / (1200);
     let milliSecs = milliSecondsIn % 1000;
+
+
 
     let hours = Math.trunc(secsIn / 3600),
       remainder = secsIn % 3600,
       minutes = Math.trunc(remainder / 60),
       seconds = Math.trunc(remainder % 60);
+    console.log(secsIn, milliSecondsIn, remainder, seconds);
 
 
-    return ( hours ? (hours + "h ") : ""
-      + minutes ?  (minutes + "min ") : ""
-      + seconds ? (seconds + "sec") : "" );
+    return (((hours > 0) ? (hours + "h ") : "")
+      + ((minutes > 0) ?  (minutes + "min ") : "")
+      + ((seconds > 0) ? (seconds + "sec") : "" ));
   }
 
   return (

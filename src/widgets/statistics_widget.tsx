@@ -1,13 +1,11 @@
 import {
   usePlugin,
   renderWidget,
-  useTracker,
   useRunAsync,
   Rem,
   useAPIEventListener,
   AppEvents,
 } from '@remnote/plugin-sdk';
-import { Card } from '@remnote/plugin-sdk/dist/name_spaces/card';
 import { useState } from 'react';
 import moment from 'moment';
 import { QueueInteractionScore } from '@remnote/plugin-sdk/dist/interfaces';
