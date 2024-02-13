@@ -19,6 +19,7 @@ html,
     -webkit-text-size-adjust: 100%; /* 2 */
     -moz-tab-size: 4; /* 3 */
     tab-size: 4; /* 3 */
+    background: transparent !important;
 }
 
 /*
@@ -30,6 +31,7 @@ body,
 :host {
     margin: 0; /* 1 */
     line-height: inherit; /* 2 */
+    background: transparent !important;
 }
 
 /**
@@ -74,19 +76,23 @@ body,
     color: #ffbf60;
 }
 
-.card-red-bg {
+.color-again {
+    background-color: #cc04fd;
+}
+
+.card-red-bg, .color-red {
     background: #ff6060;
     color: black;
     text-align: center;
 }
 
-.card-green-bg {
+.card-green-bg, .color-green {
     background: #7ff87f;
     color: black;
     text-align: center;
 }
 
-.card-orange-bg {
+.card-orange-bg, .color-orange {
     background: #ffbf60;
     color: black;
     text-align: center;
@@ -126,13 +132,47 @@ body,
     right: 0;
     display: none;
     z-index: 1;
-    background-color: black;
-    border: 1px solid #d3d3d3;
     border-radius: 8px;
     padding: 10px;
-
 }
+.score-item {
+    position: relative;
+}
+.score-item:hover .score-hover-infos,
+.score-item:focus .score-hover-infos {
+    display: block;
+}
+.score-hover-infos {
+    font-size: 0.8rem;
+    line-height: 0.9rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border-radius: 8px;
+    position: absolute;
+    top: -55px;
+    left: 0;
+    z-index: 1;
+    display: none;
+    width: 180px;
+}
+
 html {
     overflow: scroll !important;
     /*height: 100%;*/
+}
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #d3d3d3;
+}
+.score-square {
+    width: 32px;
+    height: 32px;
+    border-radius: 5px;
+    margin: 4px;
 }

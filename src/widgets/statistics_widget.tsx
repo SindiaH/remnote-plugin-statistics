@@ -1,4 +1,12 @@
-import { usePlugin, renderWidget, useTracker, useRunAsync, Rem } from '@remnote/plugin-sdk';
+import {
+  usePlugin,
+  renderWidget,
+  useTracker,
+  useRunAsync,
+  Rem,
+  useAPIEventListener,
+  AppEvents,
+} from '@remnote/plugin-sdk';
 import { Card } from '@remnote/plugin-sdk/dist/name_spaces/card';
 import { useState } from 'react';
 import moment from 'moment';
@@ -26,23 +34,24 @@ export const StatisticsWidget = () => {
   const plugin = usePlugin();
   let allRemsInContext: Rem[] | undefined;
   const [maxCount, setMaxCount] = useState(0);
-  /**
-   * get all Cards from allRemsInContext, resolve the promises and store them in allCards
-   */
-  // const contextRem = useRunAsync(async () => {
-  //   return await plugin.rem.getAll();
-  // }, []);
+
+  useAPIEventListener(AppEvents.QueueCompleteCard, undefined, async () => {
+    await reloadData();
+  });
 
   allRemsInContext = useRunAsync(async () => {
+    console.log('Updated allRemsInContext');
     return await plugin.rem.getAll();
   }, []);
 
   useRunAsync(async () => {
-    const result: Card[] = [];
+      await reloadData();
+  }, [allRemsInContext]);
+
+  const reloadData = async () => {
     const objectList: RepetitionTimeObject[] = [];
     for (const rem of allRemsInContext || []) {
       const cards = await rem.getCards();
-      result.push(...cards);
       for (const card of cards) {
         if (card.nextRepetitionTime) {
           const item: RepetitionTimeObject = {
@@ -75,11 +84,14 @@ export const StatisticsWidget = () => {
     }).sort((a, b) => {
       return new Date(a.date).getTime() - new Date(b.date).getTime();
     }));
-  }, [allRemsInContext]);
+  }
 
   return (
     <div className="p-2 m-2 rounded-lg rn-clr-background-light rn-clr-content sample-widget">
-      <h1 className="text-xl">Statistics</h1>
+      <div className="header">
+        <h1 className="text-xl">Statistics</h1>
+        <button onClick={() => reloadData()}>🔁</button>
+      </div>
       {nextRepetitionTime
         ? nextRepetitionTime?.map((list) => {
             return (
