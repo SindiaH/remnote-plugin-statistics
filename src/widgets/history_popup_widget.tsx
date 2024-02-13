@@ -47,7 +47,7 @@ export const HistoryPopupWidget = () => {
       return "0ms";
     }
 
-    let secsIn = milliSecondsIn / 60;
+    let secsIn = milliSecondsIn / 600;
     let milliSecs = milliSecondsIn % 1000;
 
     let hours = Math.trunc(secsIn / 3600),
