@@ -1,0 +1,4 @@
+body, .plugin, .history-rightside-widget {
+    justify-content: flex-end !important;
+    display: flex !important;
+}

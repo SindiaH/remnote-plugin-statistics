@@ -175,3 +175,8 @@ html {
     border-radius: 5px;
     margin: 4px;
 }
+.history-rightside-widget .score-square {
+    width: 16px;
+    height: 16px;
+    margin: 2px;
+}

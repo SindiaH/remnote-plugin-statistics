@@ -31,6 +31,11 @@ async function onActivate(plugin: ReactRNPlugin) {
     title: 'Show the statistics indicators for a card while learning',
     defaultValue: true,
   });
+  await plugin.settings.registerBooleanSetting({
+    id: 'ShowStatisticsForRem',
+    title: 'Show the statistics indicators for a rem next to it while in the editor view, if the rem has cards',
+    defaultValue: true,
+  });
   //
   // await plugin.settings.registerNumberSetting({
   //   id: 'favorite-number',
@@ -89,6 +94,24 @@ async function onActivate(plugin: ReactRNPlugin) {
       },
     }
   );
+
+  const showStatisticsForCard = Boolean(
+    await plugin.settings.getSetting("ShowStatisticsForRem")
+  );
+
+  if(showStatisticsForCard){
+    await plugin.app.registerWidget(
+      "history_rightside_info",
+      WidgetLocation.RightSideOfEditor,
+      {
+        dimensions: {
+          width: '100%',
+          height: 40,
+        },
+      }
+    );
+  }
+
 }
 
 async function onDeactivate(_: ReactRNPlugin) {}
