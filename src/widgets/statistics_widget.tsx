@@ -10,7 +10,7 @@ import { useState } from 'react';
 import moment from 'moment';
 import { QueueInteractionScore } from '@remnote/plugin-sdk/dist/interfaces';
 import '../style.css';
-import '../App.css';
+import '../../public/App.css';
 
 type RepetitionTimeObject = {
   id: string;

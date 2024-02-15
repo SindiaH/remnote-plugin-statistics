@@ -1,6 +1,6 @@
 import { AppEvents, declareIndexPlugin, ReactRNPlugin, RNPlugin, WidgetLocation } from '@remnote/plugin-sdk';
 import '../style.css';
-import '../App.css';
+import '../../public/App.css';
 import icon from '../../public/statistic.svg';
 
 async function showPopup(
