@@ -74,23 +74,23 @@ body,
     color: #ffbf60;
 }
 
-.color-again {
+.card-again-bg {
     background-color: #cc04fd;
 }
 
-.card-red-bg, .color-red {
+.card-red-bg, .card-red-bg {
     background: #ff6060;
     color: black;
     text-align: center;
 }
 
-.card-green-bg, .color-green {
+.card-green-bg, .card-green-bg{
     background: #7ff87f;
     color: black;
     text-align: center;
 }
 
-.card-orange-bg, .color-orange {
+.card-orange-bg, .card-orange-bg {
     background: #ffbf60;
     color: black;
     text-align: center;

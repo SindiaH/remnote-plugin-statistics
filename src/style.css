@@ -74,26 +74,38 @@ body,
     color: #ffbf60;
 }
 
-.color-again {
-    background-color: #cc04fd;
+.card-again-bg {
+    background-color: #b03dca;
 }
 
-.card-red-bg, .color-red {
+.card-red-bg {
     background: #ff6060;
     color: black;
     text-align: center;
 }
 
-.card-green-bg, .color-green {
+.card-green-bg {
     background: #7ff87f;
     color: black;
     text-align: center;
 }
 
-.card-orange-bg, .color-orange {
+.card-orange-bg {
     background: #ffbf60;
     color: black;
     text-align: center;
+}
+
+.card-too-early-bg {
+    background-color: #d3d3d3;
+}
+
+.card-leech-bg {
+    background-color: #5b0909;
+}
+
+.card-reset-bg {
+    background-color: #be1212;
 }
 
 .card-container {

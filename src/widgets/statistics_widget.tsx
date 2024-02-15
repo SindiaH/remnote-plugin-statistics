@@ -8,23 +8,10 @@ import {
 } from '@remnote/plugin-sdk';
 import { useState } from 'react';
 import moment from 'moment';
-import { QueueInteractionScore } from '@remnote/plugin-sdk/dist/interfaces';
 import '../style.css';
 import '../../public/App.css';
+import { RepetitionTimeList, RepetitionTimeObject } from '../shared/interfaces';
 
-type RepetitionTimeObject = {
-  id: string;
-  dateTime: Date;
-  score: QueueInteractionScore;
-}
-
-type RepetitionTimeList = {
-  date: Date;
-  list: RepetitionTimeObject[];
-  goodCount?: number;
-  hardCount?: number;
-  easyCount?: number;
-}
 
 export const StatisticsWidget = () => {
   const [nextRepetitionTime, setNextRepetitionTime] =
@@ -38,7 +25,6 @@ export const StatisticsWidget = () => {
   });
 
   allRemsInContext = useRunAsync(async () => {
-    console.log('Updated allRemsInContext');
     return await plugin.rem.getAll();
   }, []);
 
@@ -53,7 +39,7 @@ export const StatisticsWidget = () => {
       for (const card of cards) {
         if (card.nextRepetitionTime) {
           const item: RepetitionTimeObject = {
-            dateTime: new Date(card.nextRepetitionTime),
+            dateTime: moment.utc(card.nextRepetitionTime).local(true).toDate(),
             id: card.remId,
             score: card.repetitionHistory?.at(-1)?.score ?? 0,
           };
@@ -98,7 +84,6 @@ export const StatisticsWidget = () => {
                   .format('dd MM-DD') : ''}</div>
                 <div className="card" style={{ width: '100%' }}>
                   <div className="indicator" style={{ width: (list?.list?.length / maxCount * 100 + '%') }}>
-                    {/*<div className='card-indicator-info'>{list?.list?.length}</div>*/}
                     <div className="card-red-bg"
                          style={{ width: ((list.hardCount ?? 0) / list?.list?.length * 100 + '%') }}>{list.hardCount}</div>
                     <div className="card-orange-bg"
@@ -114,7 +99,6 @@ export const StatisticsWidget = () => {
                   </div>
                 </div>
                 <div className="card-popup">
-
                   <div className="card-info">
                     <span className="card-red">Hard: {list?.hardCount}, </span>
                     <span className="card-orange">Good: {list?.goodCount}, </span>
