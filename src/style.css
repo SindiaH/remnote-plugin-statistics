@@ -192,3 +192,20 @@ html {
     height: 16px;
     margin: 2px;
 }
+
+.last-score, .current-card div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.current-card {
+    padding: 10px;
+    border-bottom: 1px solid #d3d3d3;
+
+}
+.current-card h1 {
+    font-size: 1.5rem;
+    border-bottom: 1px solid #d3d3d3;
+    margin-bottom: 8px;
+}

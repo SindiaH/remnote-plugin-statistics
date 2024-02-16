@@ -4,13 +4,14 @@ import {
   useRunAsync,
   Rem,
   useAPIEventListener,
-  AppEvents,
+  AppEvents, Card,
 } from '@remnote/plugin-sdk';
 import { useState } from 'react';
 import moment from 'moment';
 import '../style.css';
 import '../../public/App.css';
 import { RepetitionTimeList, RepetitionTimeObject } from '../shared/interfaces';
+import { SharedService } from '../shared/shared.service';
 
 
 export const StatisticsWidget = () => {
@@ -19,31 +20,47 @@ export const StatisticsWidget = () => {
   const plugin = usePlugin();
   let allRemsInContext: Rem[] | undefined;
   const [maxCount, setMaxCount] = useState(0);
+  const [currentCard, setCurrentCard] = useState<Card | undefined>(undefined);
+  const [isPlannedForToday, setIsPlannedForToday] = useState<boolean | undefined>(false);
 
   useAPIEventListener(AppEvents.QueueCompleteCard, undefined, async () => {
     await reloadData();
   });
+  useAPIEventListener(AppEvents.QueueExit, undefined, async () => {
+    await reloadData();
+  })
 
   allRemsInContext = useRunAsync(async () => {
-    return await plugin.rem.getAll();
+    const list = await plugin.rem.getAll();
+    return list.filter(async (rem) => {
+      if (await rem.getEnablePractice()) {
+        return rem;
+      }
+    });
   }, []);
 
   useRunAsync(async () => {
-      await reloadData();
+    await reloadData();
   }, [allRemsInContext]);
 
   const reloadData = async () => {
+    const currentCard = await plugin.queue.getCurrentCard();
     const objectList: RepetitionTimeObject[] = [];
     for (const rem of allRemsInContext || []) {
       const cards = await rem.getCards();
       for (const card of cards) {
-        if (card.nextRepetitionTime) {
+        if (card.nextRepetitionTime && card.repetitionHistory) {
           const item: RepetitionTimeObject = {
             dateTime: moment.utc(card.nextRepetitionTime).local(true).toDate(),
             id: card.remId,
             score: card.repetitionHistory?.at(-1)?.score ?? 0,
           };
           objectList.push(item);
+          if (moment(item.dateTime).format('dd MM-DD') == moment(new Date()).format('dd MM-DD')
+            && card._id === currentCard?._id) {
+            console.log('currentCard', card);
+            setIsPlannedForToday(true);
+          }
         }
       }
     }
@@ -56,6 +73,7 @@ export const StatisticsWidget = () => {
         tempNextRepetitionTime[index].list.push(card);
       }
     }
+    setCurrentCard(currentCard);
     setMaxCount(Math.max(...tempNextRepetitionTime.map(x => x.list.length)));
     setNextRepetitionTime(tempNextRepetitionTime.map(x => {
       return {
@@ -68,7 +86,7 @@ export const StatisticsWidget = () => {
     }).sort((a, b) => {
       return new Date(a.date).getTime() - new Date(b.date).getTime();
     }));
-  }
+  };
 
   return (
     <div className="p-2 m-2 rounded-lg rn-clr-background-light rn-clr-content sample-widget">
@@ -76,6 +94,23 @@ export const StatisticsWidget = () => {
         <h1 className="text-xl">Statistics</h1>
         <button onClick={() => reloadData()}>🔁</button>
       </div>
+      {currentCard?.remId ?
+        <div className="current-card">
+          <h1>Current Card</h1>
+          <div className="last-score">Last score: <div
+            className={'score-square ' + SharedService.getClassByScore(currentCard.repetitionHistory?.at(-1)?.score ?? 0)}>
+
+          </div>
+          </div>
+          <div>Scheduled: <div>{moment(currentCard.repetitionHistory?.at(-1)?.scheduled).format('dd, DD.MM.YYYY HH:mm')}</div>
+          </div>
+          <div>Last rep: <div>{moment(currentCard.repetitionHistory?.at(-1)?.date).format('dd, DD.MM.YYYY HH:mm')}</div>
+          </div>
+          <div className="current-card-date">Next
+            rep: <div>{moment(currentCard?.nextRepetitionTime).format('dd, DD.MM.YYYY HH:mm')}</div></div>
+          <div>Planned for today: <div>{isPlannedForToday === true ? 'Yes' : 'No'}</div></div>
+        </div>
+        : ''}
       {nextRepetitionTime
         ? nextRepetitionTime?.map((list) => {
             return (
