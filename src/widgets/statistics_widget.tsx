@@ -8,7 +8,6 @@ import {
 } from '@remnote/plugin-sdk';
 import { useState } from 'react';
 import moment from 'moment';
-import '../style.css';
 import '../../public/App.css';
 import { RepetitionTimeList, RepetitionTimeObject } from '../shared/interfaces';
 import { SharedService } from '../shared/shared.service';
@@ -19,6 +18,7 @@ export const StatisticsWidget = () => {
     useState<RepetitionTimeList[]>([]);
   const plugin = usePlugin();
   let allRemsInContext: Rem[] | undefined;
+  let allRepetitionTimeObjects: RepetitionTimeObject[] = [];
   const [maxCount, setMaxCount] = useState(0);
   const [currentCard, setCurrentCard] = useState<Card | undefined>(undefined);
   const [isPlannedForToday, setIsPlannedForToday] = useState<boolean | undefined>(false);
@@ -28,6 +28,11 @@ export const StatisticsWidget = () => {
   });
   useAPIEventListener(AppEvents.QueueExit, undefined, async () => {
     await reloadData();
+    setCurrentCard(undefined);
+  })
+
+  useAPIEventListener(AppEvents.QueueLoadCard, undefined, async () => {
+    await reloadCurrentCard();
   })
 
   allRemsInContext = useRunAsync(async () => {
@@ -41,11 +46,25 @@ export const StatisticsWidget = () => {
 
   useRunAsync(async () => {
     await reloadData();
+    await reloadCurrentCard();
   }, [allRemsInContext]);
 
-  const reloadData = async () => {
+  const reloadCurrentCard = async () => {
     const currentCard = await plugin.queue.getCurrentCard();
-    const objectList: RepetitionTimeObject[] = [];
+    setIsPlannedForToday(false);
+    if(currentCard) {
+      allRepetitionTimeObjects.forEach((item) => {
+        if (moment(item.dateTime).format('dd MM-DD') == moment(new Date()).format('dd MM-DD')
+          && item.id === currentCard?.remId) {
+          setIsPlannedForToday(true);
+        }
+      });
+    }
+    setCurrentCard(currentCard);
+  }
+
+  const reloadData = async () => {
+
     for (const rem of allRemsInContext || []) {
       const cards = await rem.getCards();
       for (const card of cards) {
@@ -55,17 +74,13 @@ export const StatisticsWidget = () => {
             id: card.remId,
             score: card.repetitionHistory?.at(-1)?.score ?? 0,
           };
-          objectList.push(item);
-          if (moment(item.dateTime).format('dd MM-DD') == moment(new Date()).format('dd MM-DD')
-            && card._id === currentCard?._id) {
-            console.log('currentCard', card);
-            setIsPlannedForToday(true);
-          }
+          allRepetitionTimeObjects.push(item);
+
         }
       }
     }
     const tempNextRepetitionTime: RepetitionTimeList[] = [];
-    for (const card of objectList) {
+    for (const card of allRepetitionTimeObjects) {
       const index = tempNextRepetitionTime.findIndex((item) => item.date.toDateString() === card.dateTime.toDateString());
       if (index === -1) {
         tempNextRepetitionTime.push({ date: card.dateTime, list: [card] });
@@ -73,7 +88,6 @@ export const StatisticsWidget = () => {
         tempNextRepetitionTime[index].list.push(card);
       }
     }
-    setCurrentCard(currentCard);
     setMaxCount(Math.max(...tempNextRepetitionTime.map(x => x.list.length)));
     setNextRepetitionTime(tempNextRepetitionTime.map(x => {
       return {
@@ -119,12 +133,22 @@ export const StatisticsWidget = () => {
                   .format('dd MM-DD') : ''}</div>
                 <div className="card" style={{ width: '100%' }}>
                   <div className="indicator" style={{ width: (list?.list?.length / maxCount * 100 + '%') }}>
-                    <div className="card-red-bg"
-                         style={{ width: ((list.hardCount ?? 0) / list?.list?.length * 100 + '%') }}>{list.hardCount}</div>
-                    <div className="card-orange-bg"
-                         style={{ width: ((list.goodCount ?? 0) / list?.list?.length * 100 + '%') }}>{list.goodCount}</div>
-                    <div className="card-green-bg"
-                         style={{ width: ((list.easyCount ?? 0) / list?.list?.length * 100 + '%') }}>{list.easyCount}</div>
+                    {list.hardCount && list.hardCount > 0 ?
+                      <div className="card-red-bg"
+                           style={{ width: ((list.hardCount ?? 0) / list?.list?.length * 100 + '%') }}>{list.hardCount}</div>
+                    : ''}
+                    {
+                      list.goodCount && list.goodCount > 0 ?
+                        <div className="card-orange-bg"
+                             style={{ width: ((list.goodCount ?? 0) / list?.list?.length * 100 + '%') }}>{list.goodCount}</div>
+                        : ''
+                    }
+                    {
+                      list.easyCount && list.easyCount > 0 ?
+                        <div className="card-green-bg"
+                             style={{ width: ((list.easyCount ?? 0) / list?.list?.length * 100 + '%') }}>{list.easyCount}</div>
+                        : ''
+                    }
                   </div>
                   <div className="card-sum">
                     Planned cards:&nbsp;

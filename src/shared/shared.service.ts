@@ -1,3 +1,5 @@
+import { QueueInteractionScore } from '@remnote/plugin-sdk/dist/interfaces';
+
 export const SharedService = {
 
   getClassByScore: (score: number) => {
@@ -32,5 +34,22 @@ export const SharedService = {
     return (((hours > 0) ? (hours + 'h ') : '')
       + ((minutes > 0) ? (minutes + 'min ') : '')
       + ((seconds > 0) ? (seconds + 'sec') : ''));
+  },
+  translateScore: (score: QueueInteractionScore) => {
+    if (score === 0.01) {
+      return 'Too early';
+    } else if (score === 0) {
+      return 'Repeat';
+    } else if (score === 0.5) {
+      return 'Hard';
+    } else if (score === 1) {
+      return 'Good';
+    } else if (score === 1.5) {
+      return 'Easy';
+    } else if (score === 2) {
+      return 'Viewed as leech';
+    } else if (score === 3) {
+      return 'Reset';
+    }
   }
 }

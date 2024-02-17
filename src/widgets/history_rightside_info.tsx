@@ -1,5 +1,4 @@
 import { renderWidget, usePlugin, useRunAsync, WidgetLocation } from '@remnote/plugin-sdk';
-import '../style.css';
 import '../../public/App.css';
 import './history-popup-widget.css';
 import './history-rightside-info.css';

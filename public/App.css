@@ -75,25 +75,38 @@ body,
 }
 
 .card-again-bg {
-    background-color: #cc04fd;
+    background-color: #b03dca;
 }
 
-.card-red-bg, .card-red-bg {
+.card-red-bg {
     background: #ff6060;
     color: black;
     text-align: center;
 }
 
-.card-green-bg, .card-green-bg{
+.card-green-bg {
     background: #7ff87f;
     color: black;
     text-align: center;
 }
 
-.card-orange-bg, .card-orange-bg {
+.card-orange-bg {
     background: #ffbf60;
     color: black;
     text-align: center;
+}
+
+.card-too-early-bg {
+    background-color: #d3d3d3;
+    color: black;
+}
+
+.card-leech-bg {
+    background-color: #5b0909;
+}
+
+.card-reset-bg {
+    background-color: #be1212;
 }
 
 .card-container {
@@ -150,11 +163,17 @@ body,
     padding: 10px;
     border-radius: 8px;
     position: absolute;
-    top: -55px;
+    top: -65px;
     left: 0;
     z-index: 1;
     display: none;
     width: 220px;
+}
+.score-hover-infos > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }
 
 html {
@@ -179,4 +198,21 @@ html {
     width: 16px;
     height: 16px;
     margin: 2px;
+}
+
+.last-score, .current-card div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.current-card {
+    padding: 10px;
+    border-bottom: 1px solid #d3d3d3;
+
+}
+.current-card h1 {
+    font-size: 1.5rem;
+    border-bottom: 1px solid #d3d3d3;
+    margin-bottom: 8px;
 }
