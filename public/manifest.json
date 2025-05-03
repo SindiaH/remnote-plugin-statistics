@@ -12,7 +12,7 @@
     "minor": 0,
     "patch": 7
   },
-  "requestNative": true,
+  "requestNative": false,
   "requiredScopes": [
     {
       "type": "All",

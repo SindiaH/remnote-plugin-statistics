@@ -8,11 +8,22 @@ export const HistoryRightsideInfo = () => {
   const plugin = usePlugin();
 
   const currentCardInfo = useRunAsync(async() => {
-    let context = await plugin.widget.getWidgetContext<WidgetLocation.UnderRemEditor>()
+    let context = await plugin.widget.getWidgetContext<WidgetLocation.UnderRemEditor>();
+    if (!context) {
+      return undefined;
+    }
     let rem = await plugin.rem.findOne(context?.remId);
+    if (!rem) {
+      return undefined;
+    }
     let cards = await rem?.getCards();
+    if (!cards) {
+      return undefined;
+    }
     return cards ? cards[0] : undefined;
   }, []);
+
+  console.log('currentCardInfo', currentCardInfo?.remId);
 
   return (
     <>
