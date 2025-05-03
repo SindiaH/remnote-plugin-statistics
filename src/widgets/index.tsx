@@ -13,12 +13,12 @@ import { Command } from 'concurrently';
 async function onActivate(plugin: ReactRNPlugin) {
   console.log('Plugin activated');
 
-  await plugin.app.registerMenuItem({
+  await plugin.app.registerRemMenuItem({
     id: "reset-all-cards",
     name: "Reset All Cards",
     location: PluginCommandMenuLocation.DocumentMenu,
     // iconUrl: 'https://png.pngtree.com/element_our/20190530/ourmid/pngtree-correct-icon-image_1267804.jpg',
-    action: async (document) => {
+    action: async (document: any) => {
       console.log('Sending message', document.remId);
 
       let parentRem = await plugin.rem.findOne(document.remId);

@@ -30,6 +30,7 @@ body,
 :host {
     margin: 0; /* 1 */
     line-height: inherit; /* 2 */
+    background: transparent;
 }
 
 /**
@@ -163,7 +164,7 @@ body,
     padding: 10px;
     border-radius: 8px;
     position: absolute;
-    top: -65px;
+    top: 65px;
     left: 0;
     z-index: 1;
     display: none;
