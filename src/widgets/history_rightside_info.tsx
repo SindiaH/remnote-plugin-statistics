@@ -8,7 +8,7 @@ export const HistoryRightsideInfo = () => {
   const plugin = usePlugin();
 
   const currentCardInfo = useRunAsync(async() => {
-    let context = await plugin.widget.getWidgetContext<WidgetLocation.RightSideOfEditor>()
+    let context = await plugin.widget.getWidgetContext<WidgetLocation.UnderRemEditor>()
     let rem = await plugin.rem.findOne(context?.remId);
     let cards = await rem?.getCards();
     return cards ? cards[0] : undefined;
@@ -23,10 +23,9 @@ export const HistoryRightsideInfo = () => {
               return (
                 <div key={index} className="flex score-item items-center">
                   <div className={'score-square ' + SharedService.getClassByScore(item.score)}></div>
-                  {/*<div className={'score-hover-infos ' + getClassByScore(item.score)}>*/}
-                  {/*  <div>Response Time: {convertMilliSecondsIntoLegibleString(item.responseTime)}</div>*/}
-                  {/*  <div>Date: {new Date(item.date).toLocaleString()}</div>*/}
-                  {/*</div>*/}
+                  <div className={'score-hover-infos-overview '}>
+                    <div>{SharedService.translateScore(item.score)} (in {SharedService.convertMilliSecondsIntoLegibleString(item.responseTime)})</div>
+                  </div>
                 </div>
               );
             })}

@@ -34,13 +34,14 @@ async function onActivate(plugin: ReactRNPlugin) {
   );
 
   if (showStatisticsForCard) {
+    
     await plugin.app.registerWidget(
       'history_rightside_info',
       WidgetLocation.RightSideOfEditor,
       {
         dimensions: {
           width: '100%',
-          height: 40,
+          height: 31,
         },
       },
     );

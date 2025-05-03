@@ -27,7 +27,6 @@ export const HistoryPopupWidget = () => {
       {showStatisticsForCard ?
         <div className="cursor-pointer grid gap-1 grid-cols-2 history-popup-widget">
           <div className="flex text-center text-lg items-center pr-2">
-            <div>History:</div>
             {currentCardInfo?.repetitionHistory?.map((item, index) => {
               return (
                 <div key={index} className="flex score-item items-center">
