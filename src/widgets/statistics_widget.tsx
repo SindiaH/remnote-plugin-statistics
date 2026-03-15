@@ -103,7 +103,7 @@ export const StatisticsWidget = () => {
   };
 
   return (
-    <div className="p-2 w-full rounded-lg rn-clr-background-light rn-clr-content sidebar-widget">
+    <div className="w-full rounded-lg rn-clr-background-light rn-clr-content sidebar-widget">
       <div className="header">
         <h1 className="text-xl">Statistics</h1>
         <button onClick={() => reloadData()}>🔁</button>
