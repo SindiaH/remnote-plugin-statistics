@@ -2,7 +2,7 @@ import {
   usePlugin,
   renderWidget,
   useRunAsync,
-  Rem,
+  PluginRem,
   useAPIEventListener,
   AppEvents, Card,
 } from '@remnote/plugin-sdk';
@@ -17,7 +17,7 @@ export const StatisticsWidget = () => {
   const [nextRepetitionTime, setNextRepetitionTime] =
     useState<RepetitionTimeList[]>([]);
   const plugin = usePlugin();
-  let allRemsInContext: Rem[] | undefined;
+  let allRemsInContext: PluginRem[] | undefined;
   let allRepetitionTimeObjects: RepetitionTimeObject[] = [];
   const [maxCount, setMaxCount] = useState(0);
   const [currentCard, setCurrentCard] = useState<Card | undefined>(undefined);
@@ -103,7 +103,7 @@ export const StatisticsWidget = () => {
   };
 
   return (
-    <div className="p-2 m-2 rounded-lg rn-clr-background-light rn-clr-content sample-widget">
+    <div className="p-2 w-full rounded-lg rn-clr-background-light rn-clr-content sidebar-widget">
       <div className="header">
         <h1 className="text-xl">Statistics</h1>
         <button onClick={() => reloadData()}>🔁</button>
