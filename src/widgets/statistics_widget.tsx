@@ -64,6 +64,7 @@ export const StatisticsWidget = () => {
   }
 
   const reloadData = async () => {
+    allRepetitionTimeObjects = [];
 
     for (const rem of allRemsInContext || []) {
       const cards = await rem.getCards();
