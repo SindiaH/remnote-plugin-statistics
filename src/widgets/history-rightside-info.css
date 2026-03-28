@@ -1,4 +1,39 @@
-body, .plugin, .history-rightside-widget {
+/*body, #root, .plugin, html {*/
+body:has(.score-square), .plugin:has(.score-square), html:has(.score-square), #root:has(.score-square) {
+    padding: 0 !important;
+    margin: 0 !important;
+    height: 28px;
+    overflow-y: hidden !important;
+}
+
+.history-rightside-widget {
     justify-content: flex-end !important;
     display: flex !important;
+    width: fit-content !important;
+}
+
+.score-item:hover {
+    .score-hover-infos-overview-right-side {
+        display: block;
+    }
+}
+
+.score-hover-infos-overview-right-side {
+    display: none;
+    font-size: 8px;
+    top: 0;
+    right: 0;
+    position: absolute;
+    width: 150px;
+    background: rgba(35, 35, 42, 0.36);
+    text-align: right;
+    z-index: 102;
+}
+
+.history-rightside-widget {
+    margin-left: auto;
+}
+
+.history-rightside-widget .score-square {
+    margin: 0 !important;
 }

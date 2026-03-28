@@ -37,11 +37,11 @@ async function onActivate(plugin: ReactRNPlugin) {
     
     await plugin.app.registerWidget(
       'history_rightside_info',
-      WidgetLocation.RightSideOfEditor,
+      WidgetLocation.UnderRemEditor,
       {
         dimensions: {
           width: '100%',
-          height: 31,
+          height: 'auto',
         },
       },
     );
