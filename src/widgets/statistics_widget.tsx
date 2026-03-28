@@ -9,8 +9,10 @@ import {
 import { useState } from 'react';
 import moment from 'moment';
 import '../../public/App.css';
-import { RepetitionTimeList, RepetitionTimeObject } from '../shared/interfaces';
+import { RepetitionTimeList, RepetitionTimeObject, TreeNode } from '../shared/interfaces';
 import { SharedService } from '../shared/shared.service';
+import { buildDocumentTree } from '../shared/tree-builder';
+import { DocumentFilterDropdown } from '../components/DocumentFilterDropdown';
 
 
 export const StatisticsWidget = () => {
@@ -22,6 +24,8 @@ export const StatisticsWidget = () => {
   const [maxCount, setMaxCount] = useState(0);
   const [currentCard, setCurrentCard] = useState<Card | undefined>(undefined);
   const [isPlannedForToday, setIsPlannedForToday] = useState<boolean | undefined>(false);
+  const [selectedFilterId, setSelectedFilterId] = useState<string | null>(null);
+  const [treeNodes, setTreeNodes] = useState<TreeNode[]>([]);
 
   useAPIEventListener(AppEvents.QueueCompleteCard, undefined, async () => {
     await reloadData();
@@ -45,9 +49,14 @@ export const StatisticsWidget = () => {
   }, []);
 
   useRunAsync(async () => {
+    const tree = await buildDocumentTree(plugin);
+    setTreeNodes(tree);
+  }, []);
+
+  useRunAsync(async () => {
     await reloadData();
     await reloadCurrentCard();
-  }, [allRemsInContext]);
+  }, [allRemsInContext, selectedFilterId]);
 
   const reloadCurrentCard = async () => {
     const currentCard = await plugin.queue.getCurrentCard();
@@ -66,7 +75,19 @@ export const StatisticsWidget = () => {
   const reloadData = async () => {
     allRepetitionTimeObjects = [];
 
-    for (const rem of allRemsInContext || []) {
+    let remsToProcess = allRemsInContext || [];
+
+    if (selectedFilterId) {
+      const filterRem = await plugin.rem.findOne(selectedFilterId);
+      if (filterRem) {
+        const descendants = await filterRem.getDescendants();
+        const descendantIds = new Set(descendants.map((d) => d._id));
+        descendantIds.add(selectedFilterId);
+        remsToProcess = remsToProcess.filter((rem) => descendantIds.has(rem._id));
+      }
+    }
+
+    for (const rem of remsToProcess) {
       const cards = await rem.getCards();
       for (const card of cards) {
         if (card.nextRepetitionTime && card.repetitionHistory) {
@@ -105,8 +126,13 @@ export const StatisticsWidget = () => {
 
   return (
     <div className="w-full rounded-lg rn-clr-background-light rn-clr-content sidebar-widget">
-      <div className="header">
+      <div className="statistics-header">
         <h1 className="text-xl">Statistics</h1>
+        <DocumentFilterDropdown
+          treeNodes={treeNodes}
+          selectedId={selectedFilterId}
+          onSelect={(id) => setSelectedFilterId(id)}
+        />
         <button onClick={() => reloadData()}>🔁</button>
       </div>
       {currentCard?.remId ?

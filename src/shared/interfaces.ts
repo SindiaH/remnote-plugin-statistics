@@ -6,6 +6,13 @@ export type RepetitionTimeObject = {
   score: QueueInteractionScore;
 }
 
+export type TreeNode = {
+  id: string;
+  name: string;
+  children: TreeNode[];
+  depth: number;
+};
+
 export type RepetitionTimeList = {
   date: Date;
   list: RepetitionTimeObject[];
